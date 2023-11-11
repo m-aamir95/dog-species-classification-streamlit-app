@@ -11,6 +11,29 @@ from model.model import ConvolutionalNeuralNetwork
 
 import cv2
 
+# Class names are not directly available
+# we will have to obtain them from dir names
+# Of the data
+def load_classNames() -> [str]:
+    base_dir = "./Raw_Data"
+
+    breeds = []
+
+    for d in sorted(os.listdir(base_dir)):
+
+        relative_dir_path = os.path.join(base_dir, d)
+
+        if os.path.isdir(relative_dir_path):
+
+            # Get the parts
+            path_parts = d.split('-')
+            breed_name = path_parts[1]
+            breeds.append(breed_name)
+    
+    return breeds
+
+
+
 # Load model and put it do eval
 def load_model() -> ConvolutionalNeuralNetwork:
 
@@ -58,6 +81,9 @@ def make_prediction(input_image):
 
 if __name__ == "__main__":
 
+    # Load breeds/class names
+    breeds = load_classNames()
+
     image_path = "Raw_Data/n02085620-Chihuahua/n02085620_199.jpg"
     dog_image = cv2.imread(image_path)
     
@@ -67,3 +93,5 @@ if __name__ == "__main__":
     predictions_softmaxed = F.softmax(predictions, dim=1)
     max_index = torch.argmax(predictions_softmaxed, dim=1)
     print(max_index)
+    print(breeds)
+    print(breeds[max_index])

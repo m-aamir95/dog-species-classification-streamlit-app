@@ -37,7 +37,7 @@ class CustomStanfordImageDataset():
 
     # Here _dir will also serve as the label of all the images inside this particular _dir
 
-    for _dir in os.listdir(self.root_dir):
+    for _dir in sorted(os.listdir(self.root_dir)):
 
       # For Each dir, read all the images, and store them into memory with their corrosponding labels i-e dirname
       for _image in os.listdir(os.path.join(self.root_dir, _dir)):

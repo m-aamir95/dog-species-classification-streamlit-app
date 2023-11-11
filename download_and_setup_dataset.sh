@@ -9,5 +9,5 @@ then
   tar -xvf images.tar &> /dev/null;
 
   mv ./Images* ./Raw_Data;
-  mv ./images* ./Raw_Data;
+  rm ./images.tar
 fi
