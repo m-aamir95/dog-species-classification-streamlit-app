@@ -21,7 +21,7 @@ class CustomStanfordImageDataset():
     #Transform which will be applied in order to prepare data for the Neural-Network
     image_transforms = transforms.Compose([transforms.ToTensor(),
                                            transforms.Grayscale() ,
-                                           transforms.Resize((64, 64)),
+                                           transforms.Resize((64, 64), antialias=None),
                                            transforms.Normalize((0.5), (0.5))])
 
     #Fitting Ordinal and OneHotEncoder to later encode labels
