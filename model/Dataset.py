@@ -10,10 +10,10 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 class CustomStanfordImageDataset():
 
-  def __init__(self, device):
+  def __init__(self, images_path,device):
 
     self.device = device
-    self.root_dir = "./Images"
+    self.root_dir = images_path
 
     #Loading all the images along with their labels into memory
     self.images_labels = []

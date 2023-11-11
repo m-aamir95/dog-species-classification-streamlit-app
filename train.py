@@ -10,6 +10,8 @@ import torch.functional as F
 
 
 # Hyper parameters
+images_path = "/content/Raw_Data/Images"
+
 lr = 0.02
 batch_size = 128
 epocs = 50
@@ -18,7 +20,7 @@ device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("
 
 def main():
 
-    dataset = CustomStanfordImageDataset(device=device)
+    dataset = CustomStanfordImageDataset(images_path=images_path,device=device)
     print("Custom Dataset Initialized")
     data_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     print("Dataloader Initialized")
