@@ -6,7 +6,7 @@ from model.model import ConvolutionalNeuralNetwork
 import torch
 from torch.utils.data import DataLoader
 import torch.optim as optim
-import torch.functional as F
+import torch.nn.functional as F
 
 
 # Hyper parameters
