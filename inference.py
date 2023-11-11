@@ -2,7 +2,9 @@ import gdown
 import os
 
 import torch
+import torch.nn.functional as F
 import torchvision.transforms as T
+
 
 from model.Dataset import CustomStanfordImageDataset
 from model.model import ConvolutionalNeuralNetwork
@@ -50,8 +52,7 @@ def make_prediction(input_image):
 
         prediction = model(transformed_image)
 
-        print(prediction.shape)
-        print(prediction)
+        return prediction
 
 
 
@@ -60,4 +61,9 @@ if __name__ == "__main__":
     image_path = "Raw_Data/n02085620-Chihuahua/n02085620_199.jpg"
     dog_image = cv2.imread(image_path)
     
-    make_prediction(dog_image)
+    predictions = make_prediction(dog_image)
+
+    # Converting to a class from logits
+    predictions_softmaxed = F.softmax(predictions, dim=1)
+    max_index = torch.argmax(predictions_softmaxed, dim=1)
+    print(max_index)
