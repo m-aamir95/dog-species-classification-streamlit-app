@@ -61,6 +61,8 @@ def main():
 
         print(f"Itr # {i}, Loss => {loss.item()}")
 
+        torch.save(model.state_dict(), "dog_species_classification_model.pym")
+
 
 
 
