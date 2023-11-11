@@ -48,7 +48,7 @@ def main():
 
             # Reshapping prediction(Y_hat) to match Y
             train_y = train_y.view(predictions.shape)
-            _decoded_train_y = data_loader.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
+            _decoded_train_y = dataset.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
             loss = F.cross_entropy(predictions, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
 
             #Calculate derivative
