@@ -15,7 +15,7 @@ images_path = "Raw_Data/Images"
 
 lr = 0.02
 batch_size = 256 
-epocs = 50
+epocs = 1
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 
@@ -97,7 +97,7 @@ def main():
 
             for (X_test_features_batch, Y_test_labels_batch) in test_dataloader:
             
-                total_test_samples += Y_labels_batch.shape[0] # TODO verify the shape
+                total_test_samples += Y_test_labels_batch.shape[0] # TODO verify the shape
 
                 x_test , y_test = X_test_features_batch, Y_test_labels_batch
 
@@ -119,7 +119,10 @@ def main():
 
                 # Applying softmax to y_hat because we are about to compare with the original y
                 # Softmax and then rouding will help to better compare with original vector
-                F.softmax(y_hat_test,)
+                # F.softmax(y_hat_tes,)
+
+                print(y_hat_test.shape)
+                print(Y_test_labels_batch.shape)
         
 
 
