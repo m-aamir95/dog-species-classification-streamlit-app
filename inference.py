@@ -15,7 +15,7 @@ import cv2
 # we will have to obtain them from dir names
 # Of the data
 def load_classNames() -> [str]:
-    base_dir = "./Raw_Data"
+    base_dir = "./Raw_Data/Images"
 
     breeds = []
 
@@ -37,10 +37,11 @@ def load_classNames() -> [str]:
 # Load model and put it do eval
 def load_model() -> ConvolutionalNeuralNetwork:
 
-    model_url = "https://drive.google.com/file/d/1qaNErdLEUslRutwl0_H9-bBjPc-gHTK-/view"
+    model_url = "https://drive.google.com/file/d/1td2Zb6a9mrHV4cThiynLmtc0SuaNpNRc/view?usp=sharing"
     downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
 
     if not os.path.exists(downloaded_model_name):
+        print("Model not found, downloading....")
         gdown.download(model_url, downloaded_model_name,fuzzy=True)
     else:
         print("Model found!, Skipping download")
@@ -84,7 +85,7 @@ if __name__ == "__main__":
     # Load breeds/class names
     breeds = load_classNames()
 
-    image_path = "Raw_Data/n02085620-Chihuahua/n02085620_199.jpg"
+    image_path = "Raw_Data/Images/n02091831-Saluki/n02091831_38.jpg"
     dog_image = cv2.imread(image_path)
     
     predictions = make_prediction(dog_image)
