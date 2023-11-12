@@ -26,18 +26,15 @@ class CustomStanfordImageDataset():
 
     #Fitting Ordinal and OneHotEncoder to later encode labels
     self.labelEncoder  = LabelEncoder()
-    self.labelEncoder  = self.labelEncoder.fit(os.listdir(self.dogs_breed_dictionary))
-    label_encoded = self.labelEncoder.transform(os.listdir(self.dogs_breed_dictionary))
+    self.labelEncoder  = self.labelEncoder.fit(list(self.dogs_breed_dictionary.keys()))
+    label_encoded = self.labelEncoder.transform(list(self.dogs_breed_dictionary.keys()))
 
     self.oneHotEncoder = OneHotEncoder(sparse=False)
     self.oneHotEncoder = self.oneHotEncoder.fit(label_encoded.reshape(len(label_encoded),1))
 
 
 
-
-    # Here _dir will also serve as the label of all the images inside this particular _dir
-
-    for dog_breed in sorted(self.dogs_breed_dictionary.keys()):
+    for dog_breed in sorted(list(self.dogs_breed_dictionary.keys())):
 
       # For Each dir, read all the images, and store them into memory with their corrosponding labels i-e dirname
       for dog_image_path in self.dogs_breed_dictionary[dog_breed]:

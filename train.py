@@ -27,21 +27,22 @@ def main():
     train_test_dataset = custom_train_test_split(data_root_dir=images_path, train_size=0.8)
 
     # Init the training dataset and dataloader
-    train_dataset = CustomStanfordImageDataset(images_path=train_test_dataset["train"],device=device)
+    train_dataset = CustomStanfordImageDataset(train_test_dataset["train"],device=device)
     train_dataloader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
 
     # Init the testing dataset and dataloader
-    test_dataset = CustomStanfordImageDataset(images_path=train_test_dataset["test"],device=device)
+    test_dataset = CustomStanfordImageDataset(train_test_dataset["test"],device=device)
     test_dataloader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=True)
 
     model =  ConvolutionalNeuralNetwork().to(device)
-    print("Model Initialized")
-
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
     optimizer = optim.SGD(model.parameters(), lr=lr)
     for i in range(epocs):
+
+        # Put the model to train mode
+        model.train()
 
         correct_count = 0
         wrong_count = 0
@@ -56,7 +57,18 @@ def main():
             predictions = model(train_x)
 
             # Reshapping prediction(Y_hat) to match Y
+            # Is required to compute the loss
             train_y = train_y.view(predictions.shape)
+
+            # We are converting the one hot vector back to the label e.g, 1,2,3
+            # Because the CrossEntropy Loss function In Pytorch expects Y to be labels
+            # And Y_HAT to be one hot vectors
+            # While we are at it, I dont think we need to convert the labels to one hot vectors
+            # Ourselves because for Y we need labels not one hot vectors
+            # For more info please watch the following awesome video at 7 min onwards
+            # to get a better idea
+
+            # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
             _decoded_train_y = train_dataset.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
             loss = F.cross_entropy(predictions, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
 
@@ -66,11 +78,49 @@ def main():
             #Update weights
             optimizer.step()
 
+            break # TODO remove it
 
 
         print(f"Itr # {i}, Loss => {loss.item()}")
 
         torch.save(model.state_dict(), "dog_species_classification_model.pym")
+
+        # Get the Results on the test set
+        total_test_accuracy = 0
+        total_test_samples = 0
+        total_test_loss = 0
+
+        #Put the model to eval mode
+        model.eval()
+
+        with torch.no_grad():
+
+            for (X_test_features_batch, Y_test_labels_batch) in test_dataloader:
+            
+                total_test_samples += Y_labels_batch.shape[0] # TODO verify the shape
+
+                x_test , y_test = X_test_features_batch, Y_test_labels_batch
+
+                y_hat_test = model(x_test)
+
+                # We are converting the one hot vector back to the label e.g, 1,2,3
+                # Because the CrossEntropy Loss function In Pytorch expects Y to be labels
+                # And Y_HAT to be one hot vectors
+                # While we are at it, I dont think we need to convert the labels to one hot vectors
+                # Ourselves because for Y we need labels not one hot vectors
+                # For more info please watch the following awesome video at 7 min onwards
+                # to get a better idea
+
+                # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
+                _decoded_test_y = test_dataset.oneHotEncoder.inverse_transform(y_test.to("cpu").detach().numpy())
+                loss = F.cross_entropy(y_hat_test, torch.tensor(_decoded_test_y, dtype=torch.long).view(len(_decoded_test_y)).to(device))
+
+                total_test_loss += loss
+
+                # Applying softmax to y_hat because we are about to compare with the original y
+                # Softmax and then rouding will help to better compare with original vector
+                F.softmax(y_hat_test,)
+        
 
 
 
