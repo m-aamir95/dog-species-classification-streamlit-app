@@ -10,13 +10,13 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 class CustomStanfordImageDataset():
 
-  def __init__(self, images_path,device):
+  def __init__(self, dogs_breed_dictionary,device):
 
     self.device = device
-    self.root_dir = images_path
+    self.dogs_breed_dictionary = dogs_breed_dictionary
 
     #Loading all the images along with their labels into memory
-    self.images_labels = []
+    self.images_and_labels = []
 
     #Transform which will be applied in order to prepare data for the Neural-Network
     image_transforms = transforms.Compose([transforms.ToTensor(),
@@ -26,8 +26,8 @@ class CustomStanfordImageDataset():
 
     #Fitting Ordinal and OneHotEncoder to later encode labels
     self.labelEncoder  = LabelEncoder()
-    self.labelEncoder  = self.labelEncoder.fit(os.listdir(self.root_dir))
-    label_encoded = self.labelEncoder.transform(os.listdir(self.root_dir))
+    self.labelEncoder  = self.labelEncoder.fit(os.listdir(self.dogs_breed_dictionary))
+    label_encoded = self.labelEncoder.transform(os.listdir(self.dogs_breed_dictionary))
 
     self.oneHotEncoder = OneHotEncoder(sparse=False)
     self.oneHotEncoder = self.oneHotEncoder.fit(label_encoded.reshape(len(label_encoded),1))
@@ -37,28 +37,26 @@ class CustomStanfordImageDataset():
 
     # Here _dir will also serve as the label of all the images inside this particular _dir
 
-    for _dir in sorted(os.listdir(self.root_dir)):
+    for dog_breed in sorted(self.dogs_breed_dictionary.keys()):
 
       # For Each dir, read all the images, and store them into memory with their corrosponding labels i-e dirname
-      for _image in os.listdir(os.path.join(self.root_dir, _dir)):
-        image_URI = os.path.join(self.root_dir, _dir, _image)
-
+      for dog_image_path in self.dogs_breed_dictionary[dog_breed]:
         try:
 
-          loaded_image = cv2.imread(image_URI)
+          loaded_image = cv2.imread(dog_image_path)
           transformed_image = image_transforms(loaded_image)
 
           #Pushing loaded and transformed data into dataset store
-          one_hot_encoder_label = torch.tensor(self.oneHotEncoder.transform(self.labelEncoder.transform([_dir]).reshape(1,1)), dtype=torch.float32)
-          self.images_labels.append((transformed_image.type(torch.float32), one_hot_encoder_label))
+          one_hot_encoder_label = torch.tensor(self.oneHotEncoder.transform(self.labelEncoder.transform([dog_breed]).reshape(1,1)), dtype=torch.float32)
+          self.images_and_labels.append((transformed_image.type(torch.float32), one_hot_encoder_label))
 
-        except exception as e:
-          pass
+        except:
+          print("Exeception while processing and loading image from disk")
 
   def __getitem__(self, index):
-    image_data, image_label = self.images_labels[index]
+    image_data, image_label = self.images_and_labels[index]
     return (image_data.to(self.device), image_label.to(self.device))
 
 
   def __len__(self):
-    return len(self.images_labels)
+    return len(self.images_and_labels)
