@@ -11,9 +11,12 @@ from DL_Backend.model import ConvolutionalNeuralNetwork
 
 import numpy as np
 
+import streamlit as st
+
 # Class names are not directly available
 # we will have to obtain them from dir names
 # Of the data
+@st.cache_data
 def load_classNames() -> [str]:
     base_dir = "./Raw_Data/Images"
 
@@ -35,6 +38,7 @@ def load_classNames() -> [str]:
 
 
 # Load model and put it do eval
+@st.cache_resource
 def load_model() -> ConvolutionalNeuralNetwork:
 
     model_url = "https://drive.google.com/file/d/1td2Zb6a9mrHV4cThiynLmtc0SuaNpNRc/view?usp=sharing"
@@ -55,6 +59,7 @@ def load_model() -> ConvolutionalNeuralNetwork:
 
     return model
 
+@st.cache_data
 def make_prediction(input_image):
 
     # Transform the image to required format
