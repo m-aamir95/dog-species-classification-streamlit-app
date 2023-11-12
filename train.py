@@ -2,6 +2,7 @@
 # I will be writing my custom-dataset to load data into memory and convert into pytorch compatible format
 from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
+from DL_Backend.data_preprocess import custom_train_test_split
 
 import torch
 from torch.utils.data import DataLoader
@@ -19,6 +20,11 @@ device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("
 
 
 def main():
+
+    # Load the custom splitted dataset
+    # This will only load the image paths
+    # The actual images will be loaded and further processed into the Pytorch Dataset
+    train_test_dataset = custom_train_test_split(data_root_dir=images_path, train_size=0.8)
 
     dataset = CustomStanfordImageDataset(images_path=images_path,device=device)
     print("Custom Dataset Initialized")
