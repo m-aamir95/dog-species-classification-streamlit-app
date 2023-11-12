@@ -8,6 +8,7 @@ then
   # Uncompressing tar ball
   tar -xvf images.tar &> /dev/null;
 
-  mv ./Images ./Raw_Data;
+  mkdir -p ./Raw_Data
+  mv ./Images ./Raw_Data/Images;
   rm ./images.tar
 fi

@@ -1,7 +1,7 @@
 # Instead of using torchvision.datasets.ImageFolder
 # I will be writing my custom-dataset to load data into memory and convert into pytorch compatible format
-from model.Dataset import CustomStanfordImageDataset
-from model.model import ConvolutionalNeuralNetwork
+from DL_Backend.Dataset import CustomStanfordImageDataset
+from DL_Backend.model import ConvolutionalNeuralNetwork
 
 import torch
 from torch.utils.data import DataLoader
