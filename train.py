@@ -13,7 +13,7 @@ import torch.nn.functional as F
 images_path = "/content/Raw_Data/Images"
 
 lr = 0.02
-batch_size = 128
+batch_size = 256 
 epocs = 50
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
