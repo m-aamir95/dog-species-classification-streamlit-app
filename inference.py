@@ -80,19 +80,18 @@ def make_prediction(input_image):
 
 
 
-if __name__ == "__main__":
-
+# Will load the actual classnames
+# Will do the predictions
+# Will convert the model results into human readable classnames
+def do_the_complete_classification(image) -> str:
     # Load breeds/class names
     breeds = load_classNames()
 
-    image_path = "Raw_Data/Images/n02091831-Saluki/n02091831_38.jpg"
-    dog_image = cv2.imread(image_path)
-    
+    dog_image = cv2.imread(image)
+
     predictions = make_prediction(dog_image)
 
     # Converting to a class from logits
     predictions_softmaxed = F.softmax(predictions, dim=1)
     max_index = torch.argmax(predictions_softmaxed, dim=1)
-    print(max_index)
-    print(breeds)
-    print(breeds[max_index])
+    return breeds[max_index]

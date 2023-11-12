@@ -28,6 +28,9 @@ for image_path in os.listdir(sample_dogs_root_dir):
     # html_content += f"<img src='{sample_dog_full_path}' alt='Image' class='image'>"
     st.image(sample_dog_full_path, "Beagle", width=400)
 
+# Get a prediction from the model
+
+
 st.header("Upload")
 # File uploader widget
 uploaded_file = st.file_uploader("Choose an image...")
@@ -35,8 +38,4 @@ uploaded_file = st.file_uploader("Choose an image...")
 # Display the uploaded image
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", width=400)
-
-# Section 3: Conclusion
-st.header("Conclusion")
-st.write("##### Summarize your findings and conclude your Streamlit app.")
 
