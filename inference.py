@@ -6,8 +6,8 @@ import torch.nn.functional as F
 import torchvision.transforms as T
 
 
-from model.Dataset import CustomStanfordImageDataset
-from model.model import ConvolutionalNeuralNetwork
+from DL_Backend.Dataset import CustomStanfordImageDataset
+from DL_Backend.model import ConvolutionalNeuralNetwork
 
 import cv2
 
@@ -38,7 +38,7 @@ def load_classNames() -> [str]:
 def load_model() -> ConvolutionalNeuralNetwork:
 
     model_url = "https://drive.google.com/file/d/1qaNErdLEUslRutwl0_H9-bBjPc-gHTK-/view"
-    downloaded_model_name = "dogs_classification_cnn_model.pym"
+    downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
 
     if not os.path.exists(downloaded_model_name):
         gdown.download(model_url, downloaded_model_name,fuzzy=True)
