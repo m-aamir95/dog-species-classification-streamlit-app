@@ -4,8 +4,11 @@ Here's our first attempt at using data to create a table:
 """
 
 import streamlit as st
-
+import numpy as np
+import cv2
 import os
+
+from inference import do_the_complete_classification
 
 # Set page configuration to wide mode
 # st.set_page_config(layout="wide")
@@ -39,3 +42,14 @@ uploaded_file = st.file_uploader("Choose an image...")
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", width=400)
 
+    # Convert the read image to numpy array 
+    np_1d_buffer = np.frombuffer(uploaded_file.read(),np.uint8)
+
+    # The data is still in the numpy format, we need to decode it via opencv decode function which
+    # Will convert the 1d data into the required image data
+    decoded_image = cv2.imdecode(np_1d_buffer, cv2.IMREAD_COLOR)
+
+    # Do the inference
+    model_resp = do_the_complete_classification(decoded_image)
+    st.write(f"#### Model Thinks its a -> <strong>{model_resp}</strong>" , unsafe_allow_html=True)
+    

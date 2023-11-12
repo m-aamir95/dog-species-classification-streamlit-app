@@ -9,7 +9,7 @@ import torchvision.transforms as T
 from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
 
-import cv2
+import numpy as np
 
 # Class names are not directly available
 # we will have to obtain them from dir names
@@ -83,13 +83,12 @@ def make_prediction(input_image):
 # Will load the actual classnames
 # Will do the predictions
 # Will convert the model results into human readable classnames
-def do_the_complete_classification(image) -> str:
+def do_the_complete_classification(image : np.array) -> str:
+   
     # Load breeds/class names
     breeds = load_classNames()
 
-    dog_image = cv2.imread(image)
-
-    predictions = make_prediction(dog_image)
+    predictions = make_prediction(image)
 
     # Converting to a class from logits
     predictions_softmaxed = F.softmax(predictions, dim=1)
