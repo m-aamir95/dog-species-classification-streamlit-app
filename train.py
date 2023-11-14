@@ -11,6 +11,8 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 import torch.nn.functional as F
 
+import wandb
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,6 +28,23 @@ device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("
 
 
 def main():
+
+
+
+    # start a new wandb run to track this script
+    wandb.init(
+        # set the wandb project where this run will be logged
+        project="Dog Species Classification Streamlit App",
+        
+        # track hyperparameters and run metadata
+        config={
+        "learning_rate": lr,
+        "architecture": "CNN",
+        "dataset": "Stanford Dog Species",
+        "epochs": epocs,
+        "batch_size" : batch_size
+        }
+    )
 
     # Load the custom splitted dataset
     # This will only load the image paths
@@ -49,10 +68,12 @@ def main():
 
         # Put the model to train mode
         model.train()
+     
+         # Get the Results on the train set
+        total_train_correct_samples = 0
+        total_train_samples = 0
+        total_train_loss = 0
 
-        correct_count = 0
-        wrong_count = 0
-        accuracies_count = 0
         overall_epoc_accuracy = [] # Mean of all accuracies for the current epoc
         for (X_features_batch, Y_labels_batch) in train_dataloader:
 
@@ -60,11 +81,11 @@ def main():
 
             model.zero_grad()
 
-            predictions = model(train_x)
+            y_hat_train = model(train_x)
 
             # Reshapping prediction(Y_hat) to match Y
             # Is required to compute the loss
-            train_y = train_y.view(predictions.shape)
+            train_y = train_y.view(y_hat_train.shape)
 
             # We are converting the one hot vector back to the label e.g, 1,2,3
             # Because the CrossEntropy Loss function In Pytorch expects Y to be labels
@@ -76,10 +97,30 @@ def main():
 
             # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
             _decoded_train_y = train_dataset.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
-            loss = F.cross_entropy(predictions, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
+            train_loss = F.cross_entropy(y_hat_train, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
+
+            total_train_loss += train_loss.item()
+
+            # Applying softmax to y_hat because we are about to compare with the original y
+            # Softmax and then rouding will help to better compare with original vector
+
+            y_hat_train_rounded_softmaxed = torch.round(F.softmax(y_hat_train, dim=1))
+
+            #Compare how many one-hot vectors or predictions match
+            matching_elems = torch.eq(y_test, y_hat_train_rounded_softmaxed) # Will produce a matrix of true and 
+                                                                             # false value where value match
+                                                                             # or not match
+                                
+            # torch.all() will make sure for matching
+            # data on a given axis
+            matching_rows = torch.sum(torch.all(matching_elems, dim=1)).item()
+
+            total_train_samples += train_y.shape[0]
+
+            total_train_correct_samples += matching_rows
 
             #Calculate derivative
-            loss.backward()
+            train_loss.backward()
 
             #Update weights
             optimizer.step()
@@ -129,18 +170,17 @@ def main():
 
                 # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
                 _decoded_test_y = test_dataset.oneHotEncoder.inverse_transform(y_test.to("cpu").detach().numpy())
-                loss = F.cross_entropy(y_hat_test, torch.tensor(_decoded_test_y, dtype=torch.long).view(len(_decoded_test_y)).to(device))
+                test_loss = F.cross_entropy(y_hat_test, torch.tensor(_decoded_test_y, dtype=torch.long).view(len(_decoded_test_y)).to(device))
 
-                total_test_loss += loss
+                total_test_loss += test_loss.item()
 
                 # Applying softmax to y_hat because we are about to compare with the original y
                 # Softmax and then rouding will help to better compare with original vector
-                # F.softmax(y_hat_tes,)
 
-                y_hat_test__rounded_softmaxed = torch.round(F.softmax(y_hat_test, dim=1))
+                y_hat_test_rounded_softmaxed = torch.round(F.softmax(y_hat_test, dim=1))
 
                 #Compare how many one-hot vectors or predictions match
-                matching_elems = torch.eq(y_test,y_hat_test) # Will produce a matrix of true and 
+                matching_elems = torch.eq(y_test, y_hat_test_rounded_softmaxed) # Will produce a matrix of true and 
                                             # false value where value match
                                             # or not match
                                 
@@ -154,8 +194,17 @@ def main():
 
                 # break
 
-        print(f"Total test loss -> {total_test_loss}")
-        print(f"Total test Accuracy -> {total_test_correct_samples/total_test_samples}")  
+            print(f"Total test loss -> {total_test_loss}")
+            print(f"Total test Accuracy -> {total_test_correct_samples/total_test_samples}") 
+
+            # log metrics to wandb
+            wandb.log({"train_acc": (total_train_correct_samples/total_train_samples), 
+                       "train_loss" : total_train_loss,
+                       "test_acc": (total_test_correct_samples/total_test_samples),
+                         "test_loss": total_test_loss}) 
+    
+    # [optional] finish the wandb run, necessary in notebooks
+    wandb.finish()
 
 if __name__ == "__main__":
 
