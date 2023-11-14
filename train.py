@@ -1,3 +1,5 @@
+import os
+
 # Instead of using torchvision.datasets.ImageFolder
 # I will be writing my custom-dataset to load data into memory and convert into pytorch compatible format
 from DL_Backend.Dataset import CustomStanfordImageDataset
@@ -9,13 +11,17 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 import torch.nn.functional as F
 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Hyper parameters
 images_path = "Raw_Data/Images"
 
-lr = 0.02
-batch_size = 256 
-epocs = 50
+lr = os.getenv("LR")
+batch_size = os.getenv("BATCHES")
+epocs = os.getenv("EPOCHS")
+
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 
