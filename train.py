@@ -15,21 +15,20 @@ import wandb
 
 from dotenv import load_dotenv
 
-load_dotenv()
-
-# Hyper parameters
-images_path = "Raw_Data/Images"
-
-lr = os.getenv("LR")
-batch_size = os.getenv("BATCHES")
-epocs = os.getenv("EPOCHS")
-
-device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 
 def main():
 
+    load_dotenv()
 
+    images_path = "Raw_Data/Images"
+
+    # Hyper parameters
+    lr = float(os.getenv("LR"))
+    batch_size = int(os.getenv("BATCHES"))
+    epocs = int(os.getenv("EPOCHS"))
+
+    device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
     # start a new wandb run to track this script
     wandb.init(
