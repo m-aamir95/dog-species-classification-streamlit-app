@@ -106,7 +106,7 @@ def main():
             y_hat_train_rounded_softmaxed = torch.round(F.softmax(y_hat_train, dim=1))
 
             #Compare how many one-hot vectors or predictions match
-            matching_elems = torch.eq(y_test, y_hat_train_rounded_softmaxed) # Will produce a matrix of true and 
+            matching_elems = torch.eq(train_y, y_hat_train_rounded_softmaxed) # Will produce a matrix of true and 
                                                                              # false value where value match
                                                                              # or not match
                                 
