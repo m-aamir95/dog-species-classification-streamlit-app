@@ -1,1 +1,1 @@
-pip install wandb dotenv
+pip install wandb python-dotenv
