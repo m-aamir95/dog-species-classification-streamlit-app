@@ -50,6 +50,8 @@ class CustomStanfordImageDataset():
         except:
           print("Exeception while processing and loading image from disk")
 
+        # break
+
   def __getitem__(self, index):
     image_data, image_label = self.images_and_labels[index]
     return (image_data.to(self.device), image_label.to(self.device))

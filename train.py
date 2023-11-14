@@ -15,7 +15,7 @@ images_path = "Raw_Data/Images"
 
 lr = 0.02
 batch_size = 256 
-epocs = 1
+epocs = 50
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 
@@ -78,7 +78,7 @@ def main():
             #Update weights
             optimizer.step()
 
-            break # TODO remove it
+            # break # TODO remove it
 
 
         print(f"Itr # {i}, Loss => {loss.item()}")
@@ -86,7 +86,7 @@ def main():
         torch.save(model.state_dict(), "dog_species_classification_model.pym")
 
         # Get the Results on the test set
-        total_test_accuracy = 0
+        total_test_correct_samples = 0
         total_test_samples = 0
         total_test_loss = 0
 
@@ -102,6 +102,16 @@ def main():
                 x_test , y_test = X_test_features_batch, Y_test_labels_batch
 
                 y_hat_test = model(x_test)
+
+                # print(y_hat_test.shape)
+                # print(y_test.shape)
+
+                # Reshapping prediction(Y_hat) to match Y
+                # Is required to compute the loss
+                y_test = y_test.view(y_hat_test.shape)
+
+        
+
 
                 # We are converting the one hot vector back to the label e.g, 1,2,3
                 # Because the CrossEntropy Loss function In Pytorch expects Y to be labels
@@ -121,12 +131,25 @@ def main():
                 # Softmax and then rouding will help to better compare with original vector
                 # F.softmax(y_hat_tes,)
 
-                print(y_hat_test.shape)
-                print(Y_test_labels_batch.shape)
-        
+                y_hat_test__rounded_softmaxed = torch.round(F.softmax(y_hat_test, dim=1))
 
+                #Compare how many one-hot vectors or predictions match
+                matching_elems = torch.eq(y_test,y_hat_test) # Will produce a matrix of true and 
+                                            # false value where value match
+                                            # or not match
+                                
+                                # torch.all() will make sure for matching
+                                # data on a given axis
+                matching_rows = torch.sum(torch.all(matching_elems, dim=1)).item()
 
+                total_test_samples += y_test.shape[0]
 
+                total_test_correct_samples += matching_rows
+
+                # break
+
+        print(f"Total test loss -> {total_test_loss}")
+        print(f"Total test Accuracy -> {total_test_correct_samples/total_test_samples}")  
 
 if __name__ == "__main__":
 
