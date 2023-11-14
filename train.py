@@ -127,7 +127,7 @@ def main():
             # break # TODO remove it
 
 
-        print(f"Itr # {i}, Loss => {loss.item()}")
+        print(f"Itr # {i}, Loss => {train_loss.item()}")
 
         torch.save(model.state_dict(), "dog_species_classification_model.pym")
 
