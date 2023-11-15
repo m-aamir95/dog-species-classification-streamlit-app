@@ -60,7 +60,7 @@ def main():
 
     
     # model =  ConvolutionalNeuralNetwork().to(device)
-    model = PreTrainedVGG16Wrapper(num_of_classes=2).get_warm_vgg16().to(device)
+    model = PreTrainedVGG16Wrapper(num_of_classes=120).get_warm_vgg16().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
@@ -75,7 +75,7 @@ def main():
         total_train_samples = 0
         total_train_loss = 0
 
-        overall_epoc_accuracy = [] # Mean of all accuracies for the current epoc
+       
         for (X_features_batch, Y_labels_batch) in train_dataloader:
 
             train_x, train_y = X_features_batch, Y_labels_batch
