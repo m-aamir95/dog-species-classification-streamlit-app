@@ -16,9 +16,6 @@ import wandb
 
 from dotenv import load_dotenv
 
-from kaggle_secrets import UserSecretsClient
-
-
 
 def main():
 
@@ -32,11 +29,6 @@ def main():
     epocs = int(os.getenv("EPOCHS"))
 
     device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
-
-    #login wandb
-    user_secrets = UserSecretsClient()
-    wandb_api_key = user_secrets.get_secret("wandb_api_key")
-    wandb.login(key=wandb_api_key)
 
     # start a new wandb run to track this script
     wandb.init(
