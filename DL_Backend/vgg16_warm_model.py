@@ -37,4 +37,4 @@ class PreTrainedVGG16Wrapper():
 
     def get_warm_vgg16(self):
 
-        return self.get_warm_vgg16
+        return self.pretrained_VGG16_model
