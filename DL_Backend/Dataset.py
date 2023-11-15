@@ -26,7 +26,6 @@ class CustomStanfordImageDataset():
 
     #Transform which will be applied in order to prepare data for the Neural-Network
     image_transforms = transforms.Compose([transforms.ToTensor(),
-                                           transforms.Grayscale() ,
                                            transforms.Resize((self.resize_width, self.resize_width), antialias=None),
                                            transforms.Normalize((0.5), (0.5))])
 
