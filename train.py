@@ -30,20 +30,7 @@ def main():
 
     device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
-    # start a new wandb run to track this script
-    wandb.init(
-        # set the wandb project where this run will be logged
-        project="Dog Species Classification Streamlit App",
-        
-        # track hyperparameters and run metadata
-        config={
-        "learning_rate": lr,
-        "architecture": "CNN",
-        "dataset": "Stanford Dog Species",
-        "epochs": epocs,
-        "batch_size" : batch_size
-        }
-    )
+   
 
     # Load the custom splitted dataset
     # This will only load the image paths
@@ -65,6 +52,26 @@ def main():
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
     optimizer = optim.SGD(model.parameters(), lr=lr)
+
+     # start a new wandb run to track this script
+    wandb.init(
+        # set the wandb project where this run will be logged
+        project="Dog Species Classification Streamlit App",
+        
+        # track hyperparameters and run metadata
+        config={
+        "learning_rate": lr,
+        "epochs": epocs,
+        "architecture": "CNN",
+        "model" : str(model),
+        "train_size" : str(train_dataset),
+        "test_size" : str(test_dataset),
+        "batch_size" : batch_size,
+        "dataset": "Stanford Dog Species",
+        
+        }
+    )
+
     for i in range(epocs):
 
         # Put the model to train mode
