@@ -35,6 +35,6 @@ class PreTrainedRESNETWrapper():
         self.pretrained_resnet_model.classifier[6] = torch.nn.Linear(num_features, self.num_of_classes)
 
 
-    def get_warm_vgg16(self):
+    def get_warm_resnet(self):
 
         return self.pretrained_resnet_model

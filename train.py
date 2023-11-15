@@ -5,6 +5,7 @@ import os
 from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
 from DL_Backend.vgg16_warm_model import PreTrainedVGG16Wrapper
+from DL_Backend.resnet_warm_model import PreTrainedRESNETWrapper
 from DL_Backend.data_preprocess import custom_train_test_split
 
 import torch
@@ -47,7 +48,7 @@ def main():
 
     
     # model =  ConvolutionalNeuralNetwork().to(device)
-    model = PreTrainedVGG16Wrapper(num_of_classes=120).get_warm_vgg16().to(device)
+    model = PreTrainedRESNETWrapper(num_of_classes=120).get_warm_resnet().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
@@ -62,13 +63,12 @@ def main():
         config={
         "learning_rate": lr,
         "epochs": epocs,
-        "architecture": "CNN",
+        "architecture": "CNN-RESNET50",
         "model" : str(model),
         "train_size" : str(len(train_dataset)),
         "test_size" : str(len(test_dataset)),
         "batch_size" : batch_size,
-        "dataset": "Stanford Dog Species",
-        
+        "dataset": "Stanford Dog Species"
         }
     )
 
