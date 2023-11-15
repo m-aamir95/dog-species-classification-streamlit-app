@@ -27,6 +27,8 @@ class CustomStanfordImageDataset():
     #Transform which will be applied in order to prepare data for the Neural-Network
     image_transforms = transforms.Compose([transforms.ToTensor(),
                                            transforms.Resize((self.resize_width, self.resize_width), antialias=None),
+                                           transforms.RandomHorizontalFlip(p=0.5),
+                                           transforms.RandomRotation(degrees=2),
                                            transforms.Normalize((0.5), (0.5))])
 
     #Fitting Ordinal and OneHotEncoder to later encode labels
@@ -55,7 +57,7 @@ class CustomStanfordImageDataset():
         except:
           print("Exeception while processing and loading image from disk")
 
-        # break
+
 
   def __getitem__(self, index):
     image_data, image_label = self.images_and_labels[index]

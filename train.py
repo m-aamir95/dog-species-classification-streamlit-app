@@ -64,8 +64,8 @@ def main():
         "epochs": epocs,
         "architecture": "CNN",
         "model" : str(model),
-        "train_size" : str(train_dataset),
-        "test_size" : str(test_dataset),
+        "train_size" : str(len(train_dataset)),
+        "test_size" : str(len(test_dataset)),
         "batch_size" : batch_size,
         "dataset": "Stanford Dog Species",
         
@@ -104,6 +104,8 @@ def main():
             # to get a better idea
 
             # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
+
+            # TODO; Potential bottleneck moving data from CPU
             _decoded_train_y = train_dataset.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
             train_loss = F.cross_entropy(y_hat_train, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
 
@@ -133,9 +135,7 @@ def main():
             #Update weights
             optimizer.step()
 
-            # break # TODO remove it
-
-
+    
         print(f"Itr # {i}, Loss => {train_loss.item()}")
 
         torch.save(model.state_dict(), "dog_species_classification_model.pym")
@@ -152,7 +152,7 @@ def main():
 
             for (X_test_features_batch, Y_test_labels_batch) in test_dataloader:
             
-                total_test_samples += Y_test_labels_batch.shape[0] # TODO verify the shape
+                total_test_samples += Y_test_labels_batch.shape[0]
 
                 x_test , y_test = X_test_features_batch, Y_test_labels_batch
 
@@ -177,6 +177,8 @@ def main():
                 # to get a better idea
 
                 # https://www.youtube.com/watch?v=7q7E91pHoW4&ab_channel=PatrickLoeber
+
+                # TODO; Potential bottleneck moving data from CPU
                 _decoded_test_y = test_dataset.oneHotEncoder.inverse_transform(y_test.to("cpu").detach().numpy())
                 test_loss = F.cross_entropy(y_hat_test, torch.tensor(_decoded_test_y, dtype=torch.long).view(len(_decoded_test_y)).to(device))
 

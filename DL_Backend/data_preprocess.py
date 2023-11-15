@@ -33,6 +33,9 @@ def custom_train_test_split(data_root_dir : str, train_size : int = 0.8) -> dict
 
             img_full_path = os.path.join(dog_breed_dir, img)
             
+            # TODO; I believe I should introduce some randomness regarding how the data is pushed in train and test sets
+            # TODO; right now first train% is always pushed inside the train set
+            # TODO; and the rest is pushed into the test
             if inserted_train_images < num_of_train_images_to_insert:
                 structure["train"][sub_dir].append(img_full_path)
             else:
