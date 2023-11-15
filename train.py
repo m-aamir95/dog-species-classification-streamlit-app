@@ -35,7 +35,7 @@ def main():
     # Load the custom splitted dataset
     # This will only load the image paths
     # The actual images will be loaded and further processed into the Pytorch Dataset
-    train_test_dataset = custom_train_test_split(data_root_dir=images_path, train_size=0.8)
+    train_test_dataset = custom_train_test_split(data_root_dir=images_path, train_size=0.9)
 
     # Init the training dataset and dataloader
     train_dataset = CustomStanfordImageDataset(train_test_dataset["train"],device=device)
