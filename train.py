@@ -4,6 +4,7 @@ import os
 # I will be writing my custom-dataset to load data into memory and convert into pytorch compatible format
 from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
+from DL_Backend.vgg16_warm_model import PreTrainedVGG16Wrapper
 from DL_Backend.data_preprocess import custom_train_test_split
 
 import torch
@@ -58,7 +59,9 @@ def main():
     test_dataset = CustomStanfordImageDataset(train_test_dataset["test"],device=device)
     test_dataloader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=True)
 
-    model =  ConvolutionalNeuralNetwork().to(device)
+    
+    # model =  ConvolutionalNeuralNetwork().to(device)
+    model = PreTrainedVGG16Wrapper(num_of_classes=2).get_warm_vgg16().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune

@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+#region My Custom Very Small CNN, does not produce good Testing accuracies
 class ConvolutionalNeuralNetwork(nn.Module):
     def __init__(self):
         super(ConvolutionalNeuralNetwork, self).__init__()
@@ -42,3 +43,5 @@ class ConvolutionalNeuralNetwork(nn.Module):
         X = F.relu(self.fc3(X))
         X = self.dropout(X)
         return X
+#endregion
+
