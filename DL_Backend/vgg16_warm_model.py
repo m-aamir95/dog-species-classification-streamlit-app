@@ -13,7 +13,7 @@ class PreTrainedVGG16Wrapper():
     # Which will be according to the domain specific task
     def __init__(self, num_of_classes : int) -> None:
         
-        self.pretrained_VGG16_model = torchvision.models.vgg16(pretrained=True)
+        self.pretrained_VGG16_model = torchvision.models.vgg16_bn(pretrained=True)
         self.num_of_classes = num_of_classes
         
         self.setup_pretrained_network_for_fine_tuning()
