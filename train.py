@@ -62,7 +62,7 @@ def main():
     
     # model =  ConvolutionalNeuralNetwork().to(device)
     model_wrapper = PreTrainedInceptionV3Wrapper(num_of_classes=120)
-    model = model_wrapper.get_warm_inception_v3.to(device)
+    model = model_wrapper.get_warm_inception_v3().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
