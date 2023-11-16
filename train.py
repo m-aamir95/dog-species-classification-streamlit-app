@@ -130,7 +130,7 @@ def main():
             # Applying softmax to y_hat because we are about to compare with the original y
             # Softmax and then rouding will help to better compare with original vector
 
-            y_hat_train_rounded_softmaxed = torch.round(F.softmax(y_hat_train, dim=1))
+            y_hat_train_rounded_softmaxed = torch.round(F.softmax(y_hat_train.logits, dim=1))
 
             #Compare how many one-hot vectors or predictions match
             matching_elems = torch.eq(train_y, y_hat_train_rounded_softmaxed) # Will produce a matrix of true and 
