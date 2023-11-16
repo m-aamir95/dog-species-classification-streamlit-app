@@ -106,8 +106,6 @@ def main():
 
             y_hat_train = model(train_x)
 
-            print(y_hat_train.shape)
-            print(train_y.shape)
             # Reshapping prediction(Y_hat) to match Y
             # Is required to compute the loss
             train_y = train_y.view(y_hat_train.shape)
