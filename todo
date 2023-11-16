@@ -7,3 +7,5 @@
 4. Compute the mean and std of training data
 
 5. Add more Dense layers at the classification layer of pre-trained models
+
+6. Check all fine tuned models do we need to set require_grad=True manually like we have in inception v3

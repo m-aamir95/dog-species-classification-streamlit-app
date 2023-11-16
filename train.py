@@ -6,6 +6,7 @@ from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
 from DL_Backend.vgg16_warm_model import PreTrainedVGG16Wrapper
 from DL_Backend.resnet_warm_model import PreTrainedRESNETWrapper
+from DL_Backend.inceptionV3_warm_model import PreTrainedInceptionV3Wrapper
 from DL_Backend.data_preprocess import custom_train_test_split
 
 import torch
@@ -60,8 +61,8 @@ def main():
 
     
     # model =  ConvolutionalNeuralNetwork().to(device)
-    model_wrapper = PreTrainedVGG16Wrapper(num_of_classes=120)
-    model = model_wrapper.get_warm_vgg16().to(device)
+    model_wrapper = PreTrainedInceptionV3Wrapper(num_of_classes=120)
+    model = model_wrapper.get_warm_inception_v3.to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
