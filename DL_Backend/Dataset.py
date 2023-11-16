@@ -39,7 +39,8 @@ class CustomStanfordImageDataset():
       for dog_image_path in self.dogs_breed_dictionary[dog_breed]:
         try:
 
-          loaded_image = cv2.imread(dog_image_path)
+          loaded_image = cv2.imread(dog_image_path, cv2.IMREAD_COLOR)
+          loaded_image = cv2.cvtColor(loaded_image, cv2.COLOR_BGR2RGB)
           transformed_image = image_transforms(loaded_image)
 
           #Pushing loaded and transformed data into dataset store
@@ -47,8 +48,7 @@ class CustomStanfordImageDataset():
           self.images_and_labels.append((transformed_image.type(torch.float32), one_hot_encoder_label))
 
         except Exception as e:
-          print(e)
-          print("Exeception while processing and loading image from disk")
+          print("Exeception while processing and loading image from disk, Image Skipped")
 
 
 
