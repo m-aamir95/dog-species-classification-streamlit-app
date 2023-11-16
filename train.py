@@ -53,7 +53,7 @@ def main():
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
-    optimizer = optim.SGD(model.parameters(), lr=lr)
+    optimizer = optim.SGD(model.parameters(), lr=lr).to(device)
 
      # start a new wandb run to track this script
     wandb.init(
@@ -66,10 +66,12 @@ def main():
         "epochs": epocs,
         "architecture": "CNN-based",
         "model" : str(model_wrapper),
+        "optimizer" : str(optimizer),
         "train_size" : str(len(train_dataset)),
         "test_size" : str(len(test_dataset)),
         "batch_size" : batch_size,
-        "dataset": "Stanford Dog Species"
+        "dataset": "Stanford Dog Species",
+        "device" : str(device)
         }
     )
 
