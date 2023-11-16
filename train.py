@@ -45,7 +45,7 @@ def main():
                                            transforms.Resize((resize_width, resize_height), antialias=None),
                                            transforms.RandomHorizontalFlip(p=0.5),
                                            transforms.RandomRotation(degrees=5),
-                                           transforms.Normalize((0.5), (0.5))])
+                                           transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
     
     train_dataset = CustomStanfordImageDataset(train_test_dataset["train"],transforms=train_image_transforms,device=device)
     train_dataloader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
