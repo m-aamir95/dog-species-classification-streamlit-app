@@ -59,7 +59,8 @@ def load_model():
         'vgg16': torchvision.models.vgg16(pretrained=True),
         'resnet50': torchvision.models.resnet50(pretrained=True),
         'resnet101': torchvision.models.resnet101(pretrained=True),
-        "custom_cnn" : ConvolutionalNeuralNetwork()
+        "custom_cnn" : ConvolutionalNeuralNetwork(),
+        "inception_v3" : torchvision.models.inception_v3(pretrained=True)
         # Add more models as needed
     }
 
