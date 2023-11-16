@@ -35,9 +35,9 @@ class PreTrainedVGG16Wrapper():
 
         # Define your custom classification head
         self.custom_classification_head = torch.nn.Sequential(
-            torch.nn.Linear(num_features, num_features),
-            torch.nn.Linear(num_features, num_features),
-            torch.nn.Linear(num_features, self.num_of_classes)
+            torch.nn.Linear(num_features, 2048),
+            torch.nn.Linear(2048, 1024),
+            torch.nn.Linear(1024, self.num_of_classes)
         )
 
         self.pretrained_VGG16_model.classifier[6] = self.custom_classification_head
