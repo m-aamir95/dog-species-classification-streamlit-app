@@ -63,7 +63,7 @@ def main():
         config={
         "learning_rate": lr,
         "epochs": epocs,
-        "architecture": "CNN-VGG16",
+        "architecture": "CNN-RESNET101",
         "model" : str(model),
         "train_size" : str(len(train_dataset)),
         "test_size" : str(len(test_dataset)),
