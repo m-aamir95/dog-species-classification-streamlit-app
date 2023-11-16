@@ -4,15 +4,13 @@ import os
 import torch
 import torch.nn.functional as F
 import torchvision.transforms as T
+import torchvision
 
-
-from DL_Backend.Dataset import CustomStanfordImageDataset
 from DL_Backend.model import ConvolutionalNeuralNetwork
 
 import numpy as np
 
 import streamlit as st
-
 
 from dotenv import load_dotenv
 
@@ -45,6 +43,7 @@ def load_classNames() -> [str]:
 @st.cache_resource
 def load_model():
 
+
     model_url = "https://drive.google.com/file/d/183ruW0I5r2GkXGQl1-qO4Hb0oooCc3Au/view?usp=sharing"
     downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
 
@@ -55,7 +54,17 @@ def load_model():
         print("Model found!, Skipping download")
 
     # Instantiate the model
-    model = ConvolutionalNeuralNetwork().to(torch.device("cpu"))
+     # Define a dictionary mapping model names to their corresponding classes
+    model_classes = {
+        'vgg16': torchvision.models.vgg16(pretrained=True),
+        'resnet50': torchvision.models.resnet50(pretrained=True),
+        'resnet101': torchvision.models.resnet101(pretrained=True),
+        "custom_cnn" : ConvolutionalNeuralNetwork()
+        # Add more models as needed
+    }
+
+    # Get the respective model for inference depending on the env variables
+    model = model_classes[os.getenv("inference_model")].to(torch.device("cpu"))
     model.load_state_dict(torch.load(downloaded_model_name, map_location=torch.device("cpu")))
 
     # Put the model to eval mode
