@@ -52,4 +52,4 @@ if uploaded_file is not None:
     # Do the inference
     model_resp = do_the_complete_classification(decoded_image)
     st.write(f"#### Model Thinks its a -> <strong>{model_resp}</strong>" , unsafe_allow_html=True)
-    st.write(f"##### Model is <strong style='color:red;display:inline'>81%</strong> confident", unsafe_allow_html=True)
+    # st.write(f"##### Model is <strong style='color:red;display:inline'>81%</strong> confident", unsafe_allow_html=True)

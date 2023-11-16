@@ -41,7 +41,7 @@ def load_classNames() -> [str]:
 @st.cache_resource
 def load_model() -> ConvolutionalNeuralNetwork:
 
-    model_url = "https://drive.google.com/file/d/1td2Zb6a9mrHV4cThiynLmtc0SuaNpNRc/view?usp=sharing"
+    model_url = "https://drive.google.com/file/d/183ruW0I5r2GkXGQl1-qO4Hb0oooCc3Au/view?usp=sharing"
     downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
 
     if not os.path.exists(downloaded_model_name):
