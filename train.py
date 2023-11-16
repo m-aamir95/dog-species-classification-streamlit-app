@@ -32,9 +32,8 @@ def main():
 
     device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
-    resize_width = os.getenv("resize_width")
-    resize_height = os.getenv("resize_width")
-    
+    resize_width = int(os.getenv("resize_width"))
+    resize_height = int(os.getenv("resize_height"))
 
     # Load the custom splitted dataset
     # This will only load the image paths

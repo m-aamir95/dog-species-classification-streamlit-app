@@ -76,8 +76,8 @@ def load_model():
 def make_prediction(input_image):
     
     # Transform the image to required format
-    resize_width = os.getenv("resize_width")
-    resize_height = os.getenv("resize_height")
+    resize_width = int(os.getenv("resize_width"))
+    resize_height = int(os.getenv("resize_height"))
 
     transforms = T.Compose([T.ToTensor(), 
                             T.Resize((resize_width, resize_height), antialias=None),

@@ -46,7 +46,8 @@ class CustomStanfordImageDataset():
           one_hot_encoder_label = torch.tensor(self.oneHotEncoder.transform(self.labelEncoder.transform([dog_breed]).reshape(1,1)), dtype=torch.float32)
           self.images_and_labels.append((transformed_image.type(torch.float32), one_hot_encoder_label))
 
-        except:
+        except Exception as e:
+          print(e)
           print("Exeception while processing and loading image from disk")
 
 
