@@ -123,7 +123,7 @@ def main():
 
             # TODO; Potential bottleneck moving data from CPU
             _decoded_train_y = train_dataset.oneHotEncoder.inverse_transform(train_y.to("cpu").detach().numpy())
-            train_loss = F.cross_entropy(y_hat_train, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
+            train_loss = F.cross_entropy(y_hat_train.logits, torch.tensor(_decoded_train_y, dtype=torch.long).view(len(_decoded_train_y)).to(device))
 
             total_train_loss += train_loss.item()
 
