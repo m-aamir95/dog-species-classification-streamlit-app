@@ -48,7 +48,8 @@ def main():
 
     
     # model =  ConvolutionalNeuralNetwork().to(device)
-    model = PreTrainedVGG16Wrapper(num_of_classes=120).get_warm_vgg16().to(device)
+    model_wrapper = PreTrainedVGG16Wrapper(num_of_classes=120)
+    model = model_wrapper.get_warm_vgg16().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
@@ -63,8 +64,8 @@ def main():
         config={
         "learning_rate": lr,
         "epochs": epocs,
-        "architecture": "CNN-RESNET101",
-        "model" : str(model),
+        "architecture": "CNN-based",
+        "model" : str(model_wrapper),
         "train_size" : str(len(train_dataset)),
         "test_size" : str(len(test_dataset)),
         "batch_size" : batch_size,
