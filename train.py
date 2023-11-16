@@ -54,7 +54,7 @@ def main():
 
     test_image_transforms = transforms.Compose([transforms.ToTensor(),
                                         transforms.Resize((resize_width, resize_height), antialias=None),
-                                        transforms.Normalize((0.5), (0.5))])
+                                        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
     test_dataset = CustomStanfordImageDataset(train_test_dataset["test"],transforms=test_image_transforms,device=device)
     test_dataloader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=True)
 
