@@ -48,7 +48,7 @@ def main():
 
     
     # model =  ConvolutionalNeuralNetwork().to(device)
-    model = PreTrainedRESNETWrapper(num_of_classes=120).get_warm_resnet().to(device)
+    model = PreTrainedVGG16Wrapper(num_of_classes=120).get_warm_vgg16().to(device)
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune

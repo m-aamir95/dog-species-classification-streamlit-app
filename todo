@@ -1,3 +1,5 @@
-1. Post Process dog species/class names because right now they are not properly formatted
+1. Post Process dog species/class names because right now they are not properly formatted [Done, now applying sorting during data loading to keep things consistent]
+
 2. Make the repo public and add the link to the repo on the app.
+
 3. Remove wandb api key from the /workspaces/dog-species-classification-streamlit-app/scripts/init_project_conf.sh
