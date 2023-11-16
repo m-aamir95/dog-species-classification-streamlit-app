@@ -32,7 +32,15 @@ class PreTrainedVGG16Wrapper():
         # We have not freezed any of the classification head layers
         # However we are going to change the last layer according to our domain specific classification task
         num_features = self.pretrained_VGG16_model.classifier[6].in_features
-        self.pretrained_VGG16_model.classifier[6] = torch.nn.Linear(num_features, self.num_of_classes)
+
+        # Define your custom classification head
+        self.custom_classification_head = torch.nn.Sequential(
+            torch.nn.Linear(num_features, num_features),
+            torch.nn.Linear(num_features, num_features),
+            torch.nn.Linear(num_features, self.num_of_classes)
+        )
+
+        self.pretrained_VGG16_model.classifier[6] = self.custom_classification_head
 
 
     def get_warm_vgg16(self):
