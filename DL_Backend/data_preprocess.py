@@ -43,5 +43,4 @@ def custom_train_test_split(data_root_dir : str, train_size : int = 0.8) -> dict
             
             inserted_train_images+=1
 
-    
     return structure
