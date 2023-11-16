@@ -34,7 +34,12 @@ class PreTrainedRESNETWrapper():
         num_features = self.pretrained_resnet_model.fc.in_features
         self.pretrained_resnet_model.fc = torch.nn.Linear(num_features, self.num_of_classes)
 
-
     def get_warm_resnet(self):
 
+
         return self.pretrained_resnet_model
+
+    def __str__(self):
+        return f"PreTrainedRESNETWrapper(num_of_classes={self.num_of_classes})"
+
+    

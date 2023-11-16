@@ -43,5 +43,9 @@ class ConvolutionalNeuralNetwork(nn.Module):
         X = F.relu(self.fc3(X))
         X = self.dropout(X)
         return X
+
+    def __str__(self):
+        return "CustomCNNModel"
+
 #endregion
 
