@@ -53,7 +53,7 @@ def main():
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
-    optimizer = optim.SGD(model.parameters(), lr=lr).to(device)
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9).to(device)
 
      # start a new wandb run to track this script
     wandb.init(
