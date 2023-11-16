@@ -13,6 +13,10 @@ import numpy as np
 
 import streamlit as st
 
+
+from dotenv import load_dotenv
+
+
 # Class names are not directly available
 # we will have to obtain them from dir names
 # Of the data
@@ -39,7 +43,7 @@ def load_classNames() -> [str]:
 
 # Load model and put it do eval
 @st.cache_resource
-def load_model() -> ConvolutionalNeuralNetwork:
+def load_model():
 
     model_url = "https://drive.google.com/file/d/183ruW0I5r2GkXGQl1-qO4Hb0oooCc3Au/view?usp=sharing"
     downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
@@ -61,13 +65,12 @@ def load_model() -> ConvolutionalNeuralNetwork:
 
 @st.cache_data
 def make_prediction(input_image):
-
+    
     # Transform the image to required format
-    resize_width = 64
-    resize_height = 64
+    resize_width = os.getenv("resize_width")
+    resize_height = os.getenv("resize_height")
 
     transforms = T.Compose([T.ToTensor(), 
-                            T.Grayscale(), 
                             T.Resize((resize_width, resize_height), antialias=None),
                             T.Normalize((0.5), (0.5))])
     transformed_image = transforms(input_image)
@@ -90,6 +93,8 @@ def make_prediction(input_image):
 # Will convert the model results into human readable classnames
 def do_the_complete_classification(image : np.array) -> str:
    
+    load_dotenv()
+    
     # Load breeds/class names
     breeds = load_classNames()
 

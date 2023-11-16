@@ -32,11 +32,8 @@ def main():
 
     device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
-    VGG16_REQUIRED_WIDTH = 224
-    VGG16_REQUIRED_HEIGHT = 224
-
-    resize_width = VGG16_REQUIRED_WIDTH
-    resize_height = VGG16_REQUIRED_HEIGHT
+    resize_width = os.getenv("resize_width")
+    resize_height = os.getenv("resize_width")
     
 
     # Load the custom splitted dataset
