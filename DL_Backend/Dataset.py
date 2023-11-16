@@ -11,25 +11,17 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 class CustomStanfordImageDataset():
 
-  def __init__(self, dogs_breed_dictionary,device):
+  def __init__(self, dogs_breed_dictionary,transforms,device):
 
     self.device = device
     self.dogs_breed_dictionary = dogs_breed_dictionary
 
-    VGG16_REQUIRED_WIDTH = 224
-    VGG16_REQUIRED_HEIGHT = 224
-    self.resize_width = VGG16_REQUIRED_WIDTH
-    self.resize_width = VGG16_REQUIRED_HEIGHT
 
     #Loading all the images along with their labels into memory
     self.images_and_labels = []
 
     #Transform which will be applied in order to prepare data for the Neural-Network
-    image_transforms = transforms.Compose([transforms.ToTensor(),
-                                           transforms.Resize((self.resize_width, self.resize_width), antialias=None),
-                                           transforms.RandomHorizontalFlip(p=0.5),
-                                           transforms.RandomRotation(degrees=2),
-                                           transforms.Normalize((0.5), (0.5))])
+    image_transforms = transforms
 
     #Fitting Ordinal and OneHotEncoder to later encode labels
     self.labelEncoder  = LabelEncoder()

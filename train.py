@@ -9,6 +9,7 @@ from DL_Backend.resnet_warm_model import PreTrainedRESNETWrapper
 from DL_Backend.data_preprocess import custom_train_test_split
 
 import torch
+import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import torch.optim as optim
 import torch.nn.functional as F
@@ -31,7 +32,12 @@ def main():
 
     device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
-   
+    VGG16_REQUIRED_WIDTH = 224
+    VGG16_REQUIRED_HEIGHT = 224
+
+    resize_width = VGG16_REQUIRED_WIDTH
+    resize_height = VGG16_REQUIRED_HEIGHT
+    
 
     # Load the custom splitted dataset
     # This will only load the image paths
@@ -39,11 +45,21 @@ def main():
     train_test_dataset = custom_train_test_split(data_root_dir=images_path, train_size=0.9)
 
     # Init the training dataset and dataloader
-    train_dataset = CustomStanfordImageDataset(train_test_dataset["train"],device=device)
+    train_image_transforms = transforms.Compose([transforms.ToTensor(),
+                                           transforms.Resize((resize_width, resize_height), antialias=None),
+                                           transforms.RandomHorizontalFlip(p=0.5),
+                                           transforms.RandomRotation(degrees=5),
+                                           transforms.Normalize((0.5), (0.5))])
+    
+    train_dataset = CustomStanfordImageDataset(train_test_dataset["train"],transforms=train_image_transforms,device=device)
     train_dataloader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
 
     # Init the testing dataset and dataloader
-    test_dataset = CustomStanfordImageDataset(train_test_dataset["test"],device=device)
+
+    test_image_transforms = transforms.Compose([transforms.ToTensor(),
+                                        transforms.Resize((resize_width, resize_height), antialias=None),
+                                        transforms.Normalize((0.5), (0.5))])
+    test_dataset = CustomStanfordImageDataset(train_test_dataset["test"],transforms=test_image_transforms,device=device)
     test_dataloader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=True)
 
     
