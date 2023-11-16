@@ -109,7 +109,7 @@ def main():
 
             # Reshapping prediction(Y_hat) to match Y
             # Is required to compute the loss
-            train_y = train_y.view(y_hat_train.shape)
+            train_y = train_y.view(y_hat_train.logits.shape)
 
             # We are converting the one hot vector back to the label e.g, 1,2,3
             # Because the CrossEntropy Loss function In Pytorch expects Y to be labels
