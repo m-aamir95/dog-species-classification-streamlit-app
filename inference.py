@@ -80,9 +80,9 @@ def make_prediction(input_image):
     resize_width = int(os.getenv("resize_width"))
     resize_height = int(os.getenv("resize_height"))
 
-    transforms = transforms.Compose([transforms.ToTensor(),
-                                        transforms.Resize((resize_width, resize_height), antialias=None),
-                                        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
+    transforms = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),
+                                        torchvision.transforms.Resize((resize_width, resize_height), antialias=None),
+                                        torchvision.transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
     transformed_image = transforms(input_image)
 
     with torch.no_grad():
