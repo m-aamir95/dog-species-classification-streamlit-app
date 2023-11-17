@@ -5,6 +5,7 @@
 
 import torchvision
 import torch
+import torch.nn as nn
 
 # The class is just a wrapper around the actual model
 class PreTrainedInceptionV3Wrapper():
@@ -30,10 +31,14 @@ class PreTrainedInceptionV3Wrapper():
         num_features = self.pretrained_inception_v3_model.fc.in_features
 
          # Define your custom classification head 1
-        self.custom_classification_head_1 = torch.nn.Sequential(
-            torch.nn.Linear(num_features, 1024),
-            torch.nn.Linear(1024, 512),
-            torch.nn.Linear(512, self.num_of_classes)
+        self.custom_classification_head_1 = nn.Sequential(
+            nn.Linear(num_features, 1024),
+            nn.ReLU(),  # Adding ReLU activation function
+            nn.Dropout(0.5),  # Adding Dropout with a dropout probability of 0.5
+            nn.Linear(1024, 512),
+            nn.ReLU(),  # Adding ReLU activation function
+            nn.Dropout(0.5),  # Adding Dropout with a dropout probability of 0.5
+            nn.Linear(512, self.num_of_classes)
         )
 
         for f in self.custom_classification_head_1.parameters():
@@ -45,10 +50,14 @@ class PreTrainedInceptionV3Wrapper():
         num_features = self.pretrained_inception_v3_model.AuxLogits.fc.in_features
 
         # Define your custom classification head 2
-        self.custom_classification_head_2 = torch.nn.Sequential(
-            torch.nn.Linear(num_features, 1024),
-            torch.nn.Linear(1024, 512),
-            torch.nn.Linear(512, self.num_of_classes)
+        self.custom_classification_head_2 = nn.Sequential(
+            nn.Linear(num_features, 1024),
+            nn.ReLU(),  # Adding ReLU activation function
+            nn.Dropout(0.5),  # Adding Dropout with a dropout probability of 0.5
+            nn.Linear(1024, 512),
+            nn.ReLU(),  # Adding ReLU activation function
+            nn.Dropout(0.5),  # Adding Dropout with a dropout probability of 0.5
+            nn.Linear(512, self.num_of_classes)
         )
 
 
