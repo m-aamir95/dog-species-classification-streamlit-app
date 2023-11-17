@@ -11,7 +11,6 @@ RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/c
 # Copy the application files to the image
 COPY DL_Backend DL_Backend
 COPY Sample_Dogs Sample_Dogs
-COPY scripts scripts
 COPY sample.env .env
 COPY inference.py .
 COPY interface.py .
