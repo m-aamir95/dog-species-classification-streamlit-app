@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 # Class names are not directly available
 # we will have to obtain them from dir names
 # Of the data
+# Loading dog breed names/classes
 @st.cache_data
 def load_classNames() -> [str]:
     base_dir = "./Raw_Data/Images"
@@ -29,7 +30,6 @@ def load_classNames() -> [str]:
         relative_dir_path = os.path.join(base_dir, d)
 
         if os.path.isdir(relative_dir_path):
-
             # Get the parts
             path_parts = d.split('-')
             breed_name = path_parts[1]
@@ -114,3 +114,4 @@ def do_the_complete_classification(image : np.array) -> str:
     predictions_softmaxed = F.softmax(predictions, dim=1)
     max_index = torch.argmax(predictions_softmaxed, dim=1)
     return breeds[max_index]
+
