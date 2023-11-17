@@ -53,7 +53,22 @@ if uploaded_file is not None:
     # Will convert the 1d data into the required image data
     decoded_image = cv2.imdecode(np_1d_buffer, cv2.IMREAD_COLOR)
 
+    if not os.path.exists("requested_images"):
+        os.mkdir("requested_images")
+    
+
     # Do the inference
     model_resp = do_the_complete_classification(decoded_image)
+
+    try:
+        # Save the image
+        cv2.imwrite(f"requested_images/{model_resp}.png",decoded_image)
+    except Exception as e:
+        print("Error creating image")
+        print(e)
+    
+    #log
+    print(f"Req Received and model responsed -> {model_resp}")
+
+    #Resp to user
     st.write(f"#### Model Thinks its a -> <strong>{model_resp}</strong>" , unsafe_allow_html=True)
-    # st.write(f"##### Model is <strong style='color:red;display:inline'>81%</strong> confident", unsafe_allow_html=True)
