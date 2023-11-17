@@ -3,7 +3,10 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Installing linux dependencies(if any)
-RUN apt-get update && apt-get install libgl1 -y
+RUN apt-get update && apt-get install libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 -y
+
+# Pytorch does not distribute the CPU only version via PyPy
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 # Copy the application files to the image
 COPY DL_Backend DL_Backend
