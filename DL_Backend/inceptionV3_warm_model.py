@@ -12,9 +12,12 @@ class PreTrainedInceptionV3Wrapper():
 
     # Here the number of classes will modify the output/classification layer of the model
     # Which will be according to the domain specific task
-    def __init__(self, num_of_classes : int) -> None:
+
+    # load_pretrained_warm_model is by default True but can be set to False 
+    # When we load this model during inference
+    def __init__(self, num_of_classes : int, load_pretrained_warm_model=True) -> None:
         
-        self.pretrained_inception_v3_model = torchvision.models.inception_v3(pretrained=True)
+        self.pretrained_inception_v3_model = torchvision.models.inception_v3(pretrained=load_pretrained_warm_model)
         self.num_of_classes = num_of_classes
         
         self.setup_pretrained_network_for_fine_tuning()
