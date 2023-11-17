@@ -3,6 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Installing linux dependencies(if any)
+RUN apt-get update && apt-get install libgl1 -y
 
 # Copy the application files to the image
 COPY DL_Backend DL_Backend
@@ -11,14 +12,15 @@ COPY scripts scripts
 COPY sample.env .env
 COPY inference.py .
 COPY interface.py .
+COPY dog_breed_names.txt .
 
 # Copy the requirements.txt to the working directory which is currently set above
 COPY streamlit-app-requirements.txt .
 
+# Install the python dependencies 
+RUN pip install -r streamlit-app-requirements.txt
+
 EXPOSE 8585
 
-# Install the python dependencies 
-# RUN pip install -r streamlit-app-requirements.txt
-
-CMD ["sleep", "60"]
+CMD ["streamlit", "run", "interface.py"]
 
