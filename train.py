@@ -66,7 +66,10 @@ def main():
 
 
     # Instantiating optimizer and passig lr and network parameters to fine-tune
-    optimizer = optim.SGD(model.parameters(), lr=lr)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+
+    # learing rate scheduler
+    lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min",patience=3, factor=0.1)
 
      # start a new wandb run to track this script
     wandb.init(
@@ -76,6 +79,7 @@ def main():
         # track hyperparameters and run metadata
         config={
         "learning_rate": lr,
+        "lr_scheduler" : str(lr_scheduler.__class__.__name__) if lr_scheduler else "None",
         "epochs": epocs,
         "architecture": "CNN-based",
         "model" : str(model_wrapper),
@@ -150,6 +154,9 @@ def main():
 
             #Update weights
             optimizer.step()
+
+            #Update lr_scheduler
+            lr_scheduler.step(train_loss)
 
     
         print(f"Itr # {i}, Loss => {train_loss.item()}")
