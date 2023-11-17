@@ -44,7 +44,7 @@ def load_classNames() -> [str]:
 def load_model():
 
 
-    model_url = "https://drive.google.com/file/d/183ruW0I5r2GkXGQl1-qO4Hb0oooCc3Au/view?usp=sharing"
+    model_url = "https://drive.google.com/file/d/1Tazkj_ZcCHLAszxF4APy_jgLsSefZkvi/view?usp=sharing"
     downloaded_model_name = "DL_Backend/dogs_classification_cnn_model.pym"
 
     if not os.path.exists(downloaded_model_name):
@@ -80,9 +80,9 @@ def make_prediction(input_image):
     resize_width = int(os.getenv("resize_width"))
     resize_height = int(os.getenv("resize_height"))
 
-    transforms = T.Compose([T.ToTensor(), 
-                            T.Resize((resize_width, resize_height), antialias=None),
-                            T.Normalize((0.5), (0.5))])
+    transforms = transforms.Compose([transforms.ToTensor(),
+                                        transforms.Resize((resize_width, resize_height), antialias=None),
+                                        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
     transformed_image = transforms(input_image)
 
     with torch.no_grad():
