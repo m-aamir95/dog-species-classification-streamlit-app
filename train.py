@@ -69,7 +69,7 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     # learing rate scheduler
-    lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min",patience=3, factor=0.1)
+    lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min",patience=3, factor=0.1, verbose=True)
 
      # start a new wandb run to track this script
     wandb.init(
