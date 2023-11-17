@@ -1,0 +1,13 @@
+version : '3'
+
+services:
+  streamlit_app_dog_breed_classification:
+    build:
+      context: .
+      dockerfile: dockerfiles/streamlit-ui-dog-classification-app/dockerfile
+
+    image: streamlit_app_dog_breed_classification
+    container_name: streamlit_app
+    ports:
+      - 80:80
+    restart: always

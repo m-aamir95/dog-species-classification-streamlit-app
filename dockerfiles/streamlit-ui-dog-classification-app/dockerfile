@@ -4,11 +4,21 @@ WORKDIR /app
 
 # Installing linux dependencies(if any)
 
+# Copy the application files to the image
+COPY DL_Backend DL_Backend
+COPY Sample_Dogs Sample_Dogs
+COPY scripts scripts
+COPY sample.env .env
+COPY inference.py .
+COPY interface.py .
 
 # Copy the requirements.txt to the working directory which is currently set above
 COPY streamlit-app-requirements.txt .
 
+EXPOSE 8585
 
 # Install the python dependencies 
-RUN pip install -r streamlit-app-requirements.txt
+# RUN pip install -r streamlit-app-requirements.txt
+
+CMD ["sleep", "60"]
 
