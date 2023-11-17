@@ -22,19 +22,23 @@ from dotenv import load_dotenv
 # Loading dog breed names/classes
 @st.cache_data
 def load_classNames() -> [str]:
-    base_dir = "./Raw_Data/Images"
+    dog_brred_filename = "dog_breed_names.txt"
 
-    breeds = []
+    # breeds = []
 
-    for d in sorted(os.listdir(base_dir)):
+    # for d in sorted(os.listdir(base_dir)):
 
-        relative_dir_path = os.path.join(base_dir, d)
+    #     relative_dir_path = os.path.join(base_dir, d)
 
-        if os.path.isdir(relative_dir_path):
-            # Get the parts
-            path_parts = d.split('-')
-            breed_name = path_parts[1]
-            breeds.append(breed_name)
+    #     if os.path.isdir(relative_dir_path):
+    #         # Get the parts
+    #         path_parts = d.split('-')
+    #         breed_name = path_parts[1]
+    #         breeds.append(breed_name)
+
+    breeds = None
+    with open(dog_brred_filename, "r") as file:
+        breeds = file.readlines()
     
     return breeds
 
@@ -54,19 +58,9 @@ def load_model():
     else:
         print("Model found!, Skipping download")
 
-    # Instantiate the model
-     # Define a dictionary mapping model names to their corresponding classes
-    model_classes = {
-        'vgg16': torchvision.models.vgg16(pretrained=True),
-        'resnet50': torchvision.models.resnet50(pretrained=True),
-        'resnet101': torchvision.models.resnet101(pretrained=True),
-        "custom_cnn" : ConvolutionalNeuralNetwork(),
-        "inception_v3" : PreTrainedInceptionV3Wrapper(num_of_classes=120, load_pretrained_warm_model=False).get_warm_inception_v3()
-        # Add more models as needed
-    }
-
     # Get the respective model for inference depending on the env variables
-    model = model_classes[os.getenv("inference_model")].to(torch.device("cpu"))
+
+    model = PreTrainedInceptionV3Wrapper(num_of_classes=120, load_pretrained_warm_model=False).get_warm_inception_v3().to(torch.device("cpu"))
     model.load_state_dict(torch.load(downloaded_model_name, map_location=torch.device("cpu")))
 
     # Put the model to eval mode
