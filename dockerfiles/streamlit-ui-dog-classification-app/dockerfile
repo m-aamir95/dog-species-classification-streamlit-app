@@ -20,7 +20,7 @@ COPY streamlit-app-requirements.txt .
 # Install the python dependencies 
 RUN pip install -r streamlit-app-requirements.txt
 
-EXPOSE 8585
+EXPOSE 8501
 
 CMD ["streamlit", "run", "interface.py"]
 
