@@ -59,7 +59,7 @@ if uploaded_file is not None:
 
     # Do the inference
     model_resp = do_the_complete_classification(decoded_image)
-
+    model_resp = model_resp.strip()
     try:
         # Save the image
         cv2.imwrite(f"requested_images/{model_resp}.png",decoded_image)
