@@ -7,6 +7,7 @@ import torchvision.transforms as T
 import torchvision
 
 from DL_Backend.model import ConvolutionalNeuralNetwork
+from DL_Backend.inceptionV3_warm_model import PreTrainedInceptionV3Wrapper
 
 import numpy as np
 
@@ -60,7 +61,7 @@ def load_model():
         'resnet50': torchvision.models.resnet50(pretrained=True),
         'resnet101': torchvision.models.resnet101(pretrained=True),
         "custom_cnn" : ConvolutionalNeuralNetwork(),
-        "inception_v3" : torchvision.models.inception_v3(pretrained=True)
+        "inception_v3" : PreTrainedInceptionV3Wrapper(num_of_classes=120, load_pretrained_warm_model=False).get_warm_inception_v3()
         # Add more models as needed
     }
 
@@ -88,7 +89,7 @@ def make_prediction(input_image):
     with torch.no_grad():
 
         #Reshape according to the expected shape of the model Batch x Channels x Width x Height
-        transformed_image.reshape(-1, 1, resize_width, resize_height)
+        transformed_image = transformed_image.reshape(1,3, resize_width, resize_height)
 
         model = load_model()
 

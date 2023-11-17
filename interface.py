@@ -9,6 +9,7 @@ import cv2
 import os
 
 from inference import do_the_complete_classification
+from inference import load_classNames
 
 # Set page configuration to wide mode
 # st.set_page_config(layout="wide")
@@ -18,6 +19,9 @@ st.title("Dog Species Classification")
 st.header("How it works")
 st.write("##### The app is leveraging a fine-tuned inception_v3 model for classifying 120 dog species. "
          "The model has been trained on the [Stanford dog breeds dataset](http://vision.stanford.edu/aditya86/ImageNetDogs). To achieve the best results, use images where the dog is easily distinguishable.")
+
+st.write("##### Explore dog breeds with the dropdown menu.")
+selected_option = st.selectbox("Select an option:", load_classNames(), index=0)
 
 # Section 2: Samples Dog images
 st.header("Samples Images")
