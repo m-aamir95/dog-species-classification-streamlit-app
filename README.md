@@ -5,8 +5,8 @@
 - [Dog Species Classification](#sentiment-classification-app)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
-  - [Installation and Application Startup](#installation-and-application-startup)
-  - [Usage](#usage)
+  - [Fine-tuning the model](#Fine-tuning-the-model)
+  - [Starting the Streamlit App which uses a fine-tuned model by default](#Starting-the-Streamlit-App-which-uses-a-fine-tuned-model-by-default)
 
 
 ## Description
@@ -17,32 +17,33 @@ The Dog Species Classification App is a powerful tool designed to classify 120 d
 
 The frontend is powered by Streamlit, a Python library known for its simplicity in developing interactive and data-driven web applications. Streamlit facilitates rapid development with declarative syntax, ensuring an intuitive user interface.
 
+The training codebase also integrates `Weights And Biases for MLOps`, which can be configured in the code. More on this in the setup [Installation and Application Startup](#Fine-tuning-the-model)
 
 
-For simplified and swift deployments, Docker is utilized, enabling rapid and reproducible setups.
+For simplified and swift deployments, `Docker` is utilized, enabling rapid and reproducible setups.
+
+This repositoy can be divided into two parts.
+1. Code for training and managing the model.
+2. The streamlit App.
 
 
-## Installation and Application Startup
+
+## Fine-tuning the model
 
 To get started with the Project, follow these steps:
 
 1. Clone the repository: `git clone [repository link]`
-2. Navigate to the project directory: `cd fastapi-ml-service`
-3. Install the linux dependencies including docker: `sudo bash bash_scripts/install_system_dependencies.sh`
-4. Currently we need to manually create the `sentiment_db` inside the mysql docker container (Ideally it should be a part of post container init script). Following are the steps to manually create the `sentiment_db` inside the mysql container.
-   *  `sudo docker-compose up --build -d db`
-   *  `sudo docker exec -it db bash` # Jump into the db container
-   *  `mysql -u root -p`
-   *  When prompted enter the mysql root password which is by default set to `my-secret-pw`
-   *  `create database sentiment_db;`
-   *  exit # Exit MySQL shell
-   *  exit # Exit container
-5. Start all the containers `sudo docker-compose up -d --build`
-6. The FastAPI is hosted at `PORT 8080` and the ReactJS based frontend is hosted at `PORT 80`
-7. Nagivate to `http://localhost:80`
+1. Navigate to the project directory: `cd dog-species-classification-streamlit-app`
+1. Depending on your platform CPU or GPU install pytorch from here [Pytorch](https://pytorch.org/get-started/locally/)
+1. For testing purposes you can use Google Colab or Kaggle as well, which comes with preconfigured pytorch dependencies.
+1. Install other dependencies e.g, wandb for MLOps `sudo bash scripts/install_dependencies.sh`
+1. The project uses WandB for experiment tracking. We need to login to WandB and provide our API token.
+1. Initialize project configuration (if any) and login to WandB `sudo bash scripts/init_project_conf.sh` when prompted please enter your WandB key.
+1. Download and configure the dataset `sudo bash scripts/download_and_setup_dataset.sh`
+1. Various model training parameters have been defined in `sample.env` the codebase will read them via `.env` lets make a copy of sample.env `sudo cp sample.env .env`
+1. Start the training `python train.py`
 
-## Usage
-
-1. The FastAPI API points can be viewed by visiting http://localhost:8080/docs
-2. 
-3. You can also interact with the app by visiting http://localhost:80 
+## Starting the Streamlit App which uses a fine-tuned model by default
+1. Start all the containers `sudo docker-compose up -d --build`
+1. The FastAPI is hosted at `PORT 8080` and the ReactJS based frontend is hosted at `PORT 80`
+1. Nagivate to `http://localhost:80`
