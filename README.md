@@ -44,6 +44,8 @@ To get started with the Project, follow these steps:
 1. Start the training `python train.py`
 
 ## Starting the Streamlit App which uses a fine-tuned model by default
-1. Start all the containers `sudo docker-compose up -d --build`
-1. The FastAPI is hosted at `PORT 8080` and the ReactJS based frontend is hosted at `PORT 80`
-1. Nagivate to `http://localhost:80`
+1. Clone the repository: `git clone [repository link]`
+1. Navigate to the project directory: `cd dog-species-classification-streamlit-app`
+1. And just one more command, and the streamlit app will be up and running with all of its configurations. Man I love docker.
+1. Make sure docker and docker-compose are installed.
+1. Then `sudo docker-compose up -d --build`
