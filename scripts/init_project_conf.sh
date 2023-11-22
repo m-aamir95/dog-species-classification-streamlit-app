@@ -1,1 +1,1 @@
-wandb login 013fb4af28e58d74e7696353f4ce34cbf1cb0153
+wandb login
