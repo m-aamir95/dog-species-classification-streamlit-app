@@ -1,7 +1,0 @@
-1. Make the repo public and add the link to the repo on the app.
-
-2. Remove wandb api key from the /workspaces/dog-species-classification-streamlit-app/scripts/init_project_conf.sh
-
-3. Compute the mean and std of training data
-
-4. remove nvidia and other not imp dependencies from the streamlit requirments file

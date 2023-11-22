@@ -49,3 +49,4 @@ To get started with the Project, follow these steps:
 1. Install dependencies including docker `sudo bash scripts/install_dependencies.sh`
 1. And just one more command and the Streamlit app will be up and running with all of its configurations. Man, I love Docker.
 1. Then `sudo docker-compose up -d --build`
+1. You can also interact with the app by visiting http://localhost:8501
