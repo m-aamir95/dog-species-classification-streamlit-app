@@ -15,7 +15,7 @@ COPY sample.env .env
 COPY inference.py .
 COPY interface.py .
 COPY dog_breed_names.txt .
-COPY Raw_Data .
+COPY Raw_Data Raw_Data
 
 # Copy the requirements.txt to the working directory which is currently set above
 COPY streamlit-app-requirements.txt .
