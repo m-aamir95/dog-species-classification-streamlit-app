@@ -23,17 +23,25 @@ st.write("##### The app is leveraging a fine-tuned inception_v3 model for classi
 st.write("##### Explore dog breeds with the dropdown menu.")
 selected_option = st.selectbox("Select an option:", load_classNames(), index=0)
 
+#We have reformat selected option so that it matches the naming structure of downloaded dog images
+selected_option = '_'.join(selected_option.split(' '))
+all_dog_breeds_names_with_serial_nums = os.listdir("./Raw_Data/Images")
+
+# Go through the selected dog breed dir and select a random dog to display
+random_dog_img_path_from_the_selected_dog_breed = ""
+for dog_breeds_dir in all_dog_breeds_names_with_serial_nums:
+
+    if dog_breeds_dir.split('-')[1].lower().strip() == selected_option.lower().strip():
+        selected_breed_all_available_dogs = os.listdir(os.path.join("./Raw_Data/Images", dog_breeds_dir))
+        random_dog_name = selected_breed_all_available_dogs[np.random.randint(0, len(selected_breed_all_available_dogs)-1)]
+        random_dog_img_path_from_the_selected_dog_breed = os.path.join("./Raw_Data/Images", dog_breeds_dir, random_dog_name)
+
+
 # Section 2: Samples Dog images
 st.header("Samples Images")
-# Draw multiple images
-sample_dogs_root_dir = "./Sample_Dogs"
-# Generate HTML and CSS for the images
 
-#Load and render sample dogs
-for image_path in os.listdir(sample_dogs_root_dir):
-    sample_dog_full_path = os.path.join(sample_dogs_root_dir, image_path)
-    # html_content += f"<img src='{sample_dog_full_path}' alt='Image' class='image'>"
-    st.image(sample_dog_full_path, "Beagle", width=400)
+#Display a random picture of dog from the selected breed
+st.image(random_dog_img_path_from_the_selected_dog_breed, selected_option, width=400)
 
 # Get a prediction from the model
 
