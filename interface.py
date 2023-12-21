@@ -22,6 +22,7 @@ st.write("##### The app is leveraging a fine-tuned inception_v3 model for classi
 
 st.write("##### Explore dog breeds with the dropdown menu.")
 selected_option = st.selectbox("Select an option:", load_classNames(), index=0)
+selected_option_label = selected_option
 
 #We have reformat selected option so that it matches the naming structure of downloaded dog images
 selected_option = '_'.join(selected_option.split(' '))
@@ -41,7 +42,7 @@ for dog_breeds_dir in all_dog_breeds_names_with_serial_nums:
 st.header("Samples Images")
 
 #Display a random picture of dog from the selected breed
-st.image(random_dog_img_path_from_the_selected_dog_breed, selected_option, width=400)
+st.image(random_dog_img_path_from_the_selected_dog_breed, selected_option_label, width=400)
 
 # Get a prediction from the model
 
